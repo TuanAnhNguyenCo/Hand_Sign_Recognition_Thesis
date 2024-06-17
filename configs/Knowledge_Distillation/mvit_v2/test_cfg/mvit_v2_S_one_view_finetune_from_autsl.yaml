@@ -1,7 +1,7 @@
 task: ISLR
 data:
   model_name: MvitV2_OneView_Sim_Knowledge_Distillation_Inference
-  base_url: data/VN_SIGN
+  base_url: /mnt/disk2/anhnct/Hand-Sign-Recognition/data/VN_SIGN
   dataset_name: VN_SIGN
   temporal_stride: 2
   num_output_frames: 16
@@ -23,7 +23,7 @@ data:
 training:
   test: true
   label_smoothing: 0
-  device: cuda:2
+  device: cuda:0
   overwrite: true
   log_freq: 1
   experiment_name: "MvitV2_OneView_Sim_Knowledge_Distillation (Testing)"
