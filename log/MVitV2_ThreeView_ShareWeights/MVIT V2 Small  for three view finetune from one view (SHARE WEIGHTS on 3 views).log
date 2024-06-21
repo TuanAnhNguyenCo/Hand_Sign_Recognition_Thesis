@@ -2987,3 +2987,9 @@ Testing checkpointed models starting...
 
 2024-05-10 15:32:17,658 [INFO] 
 Testing accuracy: 0.8584070796460177
+2024-06-20 23:25:02,627 [INFO] Starting MVitV2_ThreeView_ShareWeights/MVIT V2 Small  for three view finetune from one view (SHARE WEIGHTS on 3 views)...
+
+
+2024-06-20 23:26:34,685 [INFO] Starting MVitV2_ThreeView_ShareWeights/MVIT V2 Small  for three view finetune from one view (SHARE WEIGHTS on 3 views)...
+
+

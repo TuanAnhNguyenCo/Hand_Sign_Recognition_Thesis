@@ -5246,3 +5246,6 @@ Testing checkpointed models starting...
 
 2024-04-29 16:01:42,287 [INFO] 
 Testing accuracy: 0.865992414664981
+2024-06-20 23:21:49,730 [INFO] Starting MVitV2_ThreeView/MVIT V2 Small for three view finetune from one view...
+
+

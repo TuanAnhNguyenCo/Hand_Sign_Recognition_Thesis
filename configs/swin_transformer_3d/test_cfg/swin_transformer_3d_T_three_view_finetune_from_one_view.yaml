@@ -23,7 +23,7 @@ data:
 training:
   test: true
   label_smoothing: 0
-  device: cuda:1
+  device: cuda:3
   overwrite: true
   log_freq: 1
   experiment_name: "Swin Transformer 3D Tiny for threeview finetune from oneview (Testing)"

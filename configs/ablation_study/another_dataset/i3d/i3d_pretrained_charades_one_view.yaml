@@ -1,6 +1,6 @@
 task: ISLR
 data:
-  model_name: SwinTransformer3d_ThreeView_ShareWeights
+  model_name: InceptionI3d
   base_url: data/VN_SIGN
   dataset_name: VN_SIGN
   temporal_stride: 2
@@ -19,22 +19,25 @@ data:
   SHOULDER_DIST_EPSILON: 1.2
   WRIST_DELTA: 0.15
   label_folder: label_1_200
-  data_type: 1_200_three_view_ord1
+  data_type: 1_200_center_ord1
 training:
-  test: true
+  coefficient:
+    cls_x: 1
+    cts_x: 1
+    cosine_x: 1
   label_smoothing: 0
   device: cuda:2
   overwrite: true
   log_freq: 1
-  experiment_name: "Swin Transformer 3D Tiny for threeview finetune from oneview (Share weights on three views) (Testing)"
-  model_dir: results/swin_transformer/vn_sign
+  experiment_name: "I3D for VN SIGN pretrained on charades for one view"
+  model_dir: results/i3d/vn_sign
   random_seed: 42
   shuffle: True
   num_workers: 12
-  prefetch_factor: 2
-  batch_size: 2 #to-debug!
+  prefetch_factor: 4
+  batch_size: 4 #to-debug!
   total_epoch: 300 #to-debug!
-  learning_rate: 0.00001
+  learning_rate: 0.0001
   save_checkpoints: true
   scheduler_factor: 0.1
   scheduler_patience: 5
@@ -46,17 +49,17 @@ training:
   lr_scheduler: StepLR
   top_k: 5
   print_stats: true
-  pretrained: true
-  pretrained_model: checkpoints/SwinTransformer3d_ThreeView_ShareWeights/Swin Transformer 3D Tiny for threeview finetune from oneview (Share weights on three views)/best_checkpoints.pth
-  lr_step_size: 5
-  gamma: 0.5
-  num_accumulation_steps: 8
+  pretrained: false
+  pretrained_model: None
+  lr_step_size: 10
+  gamma: 0.8
+  num_accumulation_steps: 4
   patience: 15
   verbose: true
   delta: 0
   is_early_stopping: true
-  gradient_clip_val: 0
-  w_decay: 0.02
+  gradient_clip_val: 1.0
+  w_decay: 0
   log_train_step: true
   log_steps: 50
   evaluate_step: 250
@@ -66,4 +69,9 @@ inference:
   batch_size: 8
 model:
   num_classes: 199
-  
+  spatial_squeeze: True
+  final_endpoint: Logits
+  name: inception_i3d
+  in_channels: 3
+  dropout_keep_prob: 0.2
+ 

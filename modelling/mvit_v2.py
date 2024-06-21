@@ -1,5 +1,6 @@
 from modelling.mvit_v2_utils import *
 from modelling.vtn_att_poseflow_model import VTNHCPF_Three_View, MMTensorNorm
+from modelling.visual_prompt_tuning.mvit_v2_utils import mvit_v2_s_visual_prompt_tuning
 
 def _unsqueeze(x: torch.Tensor, target_dim: int, expand_dim: int) :
     tensor_dim = x.dim()
@@ -311,11 +312,23 @@ class MVitV2_ThreeView(nn.Module):
             nn.Linear(1024,num_classes)
         )
 
+        
+
     def remove_head(self):
         print("Remove head")
         self.center.head = nn.Identity()
         self.left.head = nn.Identity()
         self.right.head = nn.Identity()
+    
+    def count(self):
+           
+        total = sum(p.numel() for p in self.parameters())
+        print(f"Total params: {total}")
+
+        num_trainable_params = sum(p.numel() for p in self.parameters() if p.requires_grad)
+        print(f"Trainable params: {num_trainable_params}")
+        
+        print("Trainable params / Total params",num_trainable_params/total)
     
     def freeze_and_remove(self,layers = 5):
         print(f"Freeze {layers} layers attn")
@@ -497,6 +510,7 @@ class MVitV2_ThreeView_ShareWeights(nn.Module):
             nn.Linear(1024,num_classes)
         )
         print("*"*20)
+        
 
     def remove_head(self):
         self.encoder.head = nn.Identity()
@@ -507,6 +521,16 @@ class MVitV2_ThreeView_ShareWeights(nn.Module):
         for i in range(layers):
             for param in self.encoder.blocks[i].parameters():
                 param.requires_grad = False
+    
+    def count(self):
+           
+        total = sum(p.numel() for p in self.parameters())
+        print(f"Total params: {total}")
+
+        num_trainable_params = sum(p.numel() for p in self.parameters() if p.requires_grad)
+        print(f"Trainable params: {num_trainable_params}")
+        
+        print("Trainable params / Total params",num_trainable_params/total)
     
    
     def forward(self, left,center,right):    
@@ -521,6 +545,58 @@ class MVitV2_ThreeView_ShareWeights(nn.Module):
         center_ft = self.center_pj(center_ft)
         
         output_features = torch.cat([left_ft,center_ft,right_ft],dim = -1)
+
+        y = self.classififer(output_features)
+
+        return {
+            'logits':y
+        }
+
+class MVitV2_ThreeView_ShareWeights_Visual_Prompt_Tuning(nn.Module):
+    def __init__(self,dropout = 0.5, **kwargs):
+        super(MVitV2_ThreeView_ShareWeights_Visual_Prompt_Tuning, self).__init__()
+        print("Model: MVitV2_ThreeView_ShareWeights_Visual_Prompt_Tuning")
+        print("*"*20)
+        self.encoder = mvit_v2_s_visual_prompt_tuning( **kwargs)
+        print(kwargs)
+        num_classes = kwargs.pop('num_classes',199)
+        print("Num classes",num_classes)
+        
+
+        self.classififer = nn.Sequential(
+            nn.Linear(3*768,1024),
+            nn.ReLU(),
+            nn.Dropout(dropout),
+            nn.Linear(1024,num_classes)
+        )
+
+        print("*"*20)
+        
+
+    def remove_head(self):
+        self.encoder.head = nn.Identity()
+        print("Remove head")
+    
+    def count(self):
+       
+        total = sum(p.numel() for p in self.parameters())
+        print(f"Total params: {total}")
+
+        num_trainable_params = sum(p.numel() for p in self.parameters() if p.requires_grad)
+        print(f"Trainable params: {num_trainable_params}")
+        
+        print("Trainable params / Total params",num_trainable_params/total)
+
+   
+    def forward(self, left,center,right):    
+        b,t,c,h,w = left.shape
+        left_ft = self.encoder.forward_features(left.permute(0,2,1,3,4),view = 'left')
+        center_ft = self.encoder.forward_features(center.permute(0,2,1,3,4),view = 'center')
+        right_ft = self.encoder.forward_features(right.permute(0,2,1,3,4),view = 'right')
+
+       
+        output_features = torch.cat([left_ft,center_ft,right_ft],dim = -1)
+
 
         y = self.classififer(output_features)
 
