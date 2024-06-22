@@ -23,7 +23,7 @@ data:
 training:
   test: True
   label_smoothing: 0
-  device: cuda:0
+  device: cuda:1
   overwrite: true
   log_freq: 1
   experiment_name: "Swin Transformer 3D Tiny (hand crop) for one view pretrained on kinetics400 (Testing)"
