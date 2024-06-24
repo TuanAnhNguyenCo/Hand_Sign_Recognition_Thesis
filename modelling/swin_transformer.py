@@ -243,6 +243,7 @@ class VideoSwinTransformer_OneView_Sim_Knowledge_Distillation(nn.Module):
             
         self.student = SwinTransformer3d(num_classes = num_classes)
         state_dict = torch.load('checkpoints/swin_transformer/Swin Transformer 3D Tiny for one view of AUTSL pretrained on kinetics400 /autsl_best_checkpoints.pth',map_location=torch.device('cpu'))
+        self.student.reset_head(226) # No.ATUSL glosses
         self.student.load_state_dict(state_dict)
         self.student.head = nn.Identity() # remove head
         self.projection = nn.Sequential(

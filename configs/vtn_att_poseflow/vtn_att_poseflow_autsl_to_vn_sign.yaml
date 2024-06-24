@@ -1,7 +1,7 @@
 task: ISLR
 data:
   model_name: vtn_att_poseflow
-  base_url: data/VN_SIGN
+  base_url: /mnt/disk2/anhnct/Hand-Sign-Recognition/data/VN_SIGN
   dataset_name: VN_SIGN
   temporal_stride: 2
   num_output_frames: 16
@@ -33,8 +33,8 @@ training:
   model_dir: results/vtn_att_poseflow/vn_sign
   random_seed: 42
   shuffle: True
-  num_workers: 2
-  prefetch_factor: 1
+  num_workers: 8
+  prefetch_factor: 2
   batch_size: 3 #to-debug!
   total_epoch: 300 #to-debug!
   learning_rate: 0.0001

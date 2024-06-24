@@ -150,9 +150,32 @@ def load_model(cfg):
                 model.load_state_dict(state_dict)
         elif cfg['data']['model_name'] == 'MVitV2_ThreeView':
             model = MVitV2_ThreeView(**cfg['model'])
-            model.remove_head()
-            model.load_state_dict(torch.load(cfg['training']['pretrained_model'],map_location='cpu'))
-            print("Load Mvit V2 Three View")
+            if "autsl" in cfg['training']['pretrained_model'].split("/")[-1]:
+                state_dict = torch.load(cfg['training']['pretrained_model'],map_location='cpu')
+                model.center.reset_head(226)      
+                model.right.reset_head(226)      
+                model.left.reset_head(226)            
+                model.center.load_state_dict(state_dict,strict = True)
+                model.right.load_state_dict(state_dict,strict = True)
+                model.left.load_state_dict(state_dict,strict = True)
+                model.remove_head()
+                model.freeze_and_remove(layers=8)
+                print("Load Mvit V2 Three View Pretrained on AUTSL")
+            elif cfg['training']['pretrained_model'] == 'kinetics400':
+                state_dict = models.video.MViT_V2_S_Weights.KINETICS400_V1.get_state_dict(progress=True)
+                model.center.reset_head(400)      
+                model.right.reset_head(400)      
+                model.left.reset_head(400)            
+                model.center.load_state_dict(state_dict,strict = True)
+                model.right.load_state_dict(state_dict,strict = True)
+                model.left.load_state_dict(state_dict,strict = True)
+                model.remove_head()
+                model.freeze_and_remove(layers=8)
+                print("Load Mvit V2 Three View Pretrained on Kinetics400")
+            else:
+                model.remove_head()
+                model.load_state_dict(torch.load(cfg['training']['pretrained_model'],map_location='cpu'))
+                print("Load Mvit V2 Three View")
         elif cfg['data']['model_name'] == 'MVitV2_ThreeView_ShareWeights':
             model = MVitV2_ThreeView_ShareWeights(**cfg['model'])
             model.remove_head()
@@ -194,7 +217,7 @@ def load_model(cfg):
 
         elif cfg['data']['model_name'] == 'VTNHCPF_Three_view':
             model = VTNHCPF_Three_View(**cfg['model'],sequence_length=cfg['data']['num_output_frames'])
-            state_dict = torch.load("checkpoints/vtn_att_poseflow/vtn_att_poseflow autsl to vn sign for one view/checkpoints.pth",map_location='cpu')
+            state_dict = torch.load("checkpoints/vtn_att_poseflow/vtn_att_poseflow autsl to vn sign for one view/best_checkpoints.pth",map_location='cpu')
             model.center.load_state_dict(state_dict,strict = True)
             model.right.load_state_dict(state_dict,strict = True)
             model.left.load_state_dict(state_dict,strict = True)

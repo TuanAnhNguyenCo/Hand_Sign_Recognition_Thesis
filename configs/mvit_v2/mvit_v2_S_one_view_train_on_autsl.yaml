@@ -1,7 +1,7 @@
 task: ISLR
 data:
   model_name: mvit_v2
-  base_url: data/AUTSL
+  base_url: /mnt/disk2/anhnct/Hand-Sign-Recognition/data/AUTSL
   dataset_name: AUTSL
   temporal_stride: 2
   num_output_frames: 16
