@@ -67,9 +67,31 @@ def load_model(cfg):
                 model.load_state_dict(torch.load(cfg['training']['pretrained_model'],map_location='cpu'))
         elif cfg['data']['model_name'] == 'VTNHCPF_Three_view':
             model = VTNHCPF_Three_View(**cfg['model'],sequence_length=cfg['data']['num_output_frames'])
-            model.add_backbone()
-            model.remove_head_and_backbone()
-            model.load_state_dict(torch.load(cfg['training']['pretrained_model'],map_location='cpu'))
+            if '.ckpt' in cfg['training']['pretrained_model']:
+                new_state_dict = {}
+                for key, value in torch.load(cfg['training']['pretrained_model'],map_location='cpu')['state_dict'].items():
+                        new_state_dict[key.replace('model.','')] = value
+                model.center.reset_head(226) # AUTSL
+                model.left.reset_head(226) # AUTSL
+                model.right.reset_head(226) # AUTSL
+                # load autsl ckpt
+                model.center.load_state_dict(new_state_dict)
+                model.right.load_state_dict(new_state_dict)
+                model.left.load_state_dict(new_state_dict)
+                # add backbone
+                model.add_backbone()
+                # remove center, left and right backbone
+                model.remove_head_and_backbone()
+                model.freeze(layers = 0)
+                print("Load VTNHCPF Three View")
+            elif "IMAGENET" == cfg['training']['pretrained_model']:
+                model.add_backbone()
+                model.remove_head_and_backbone()
+                print("Load VTNHCPF Three View IMAGENET")
+            else:
+                model.add_backbone()
+                model.remove_head_and_backbone()
+                model.load_state_dict(torch.load(cfg['training']['pretrained_model'],map_location='cpu'))
         
             print("Load VTNHCPF Three View")
         elif cfg['data']['model_name'] == 'InceptionI3d':

@@ -1,6 +1,6 @@
 task: ISLR
 data:
-  model_name: MVitV2_HandCrop
+  model_name: VTNHCPF_Three_view
   base_url: /mnt/disk2/anhnct/Hand-Sign-Recognition/data/VN_SIGN
   dataset_name: VN_SIGN
   temporal_stride: 2
@@ -19,20 +19,19 @@ data:
   SHOULDER_DIST_EPSILON: 1.2
   WRIST_DELTA: 0.15
   label_folder: label_1_200
-  data_type: 1_200_center_ord1
+  data_type: 1_200_three_view_ord1
 training:
-  test: true
   label_smoothing: 0
-  device: cuda:0
+  device: cuda:3
   overwrite: true
   log_freq: 1
-  experiment_name: "MVIT V2 Small (Hand Crop) for one view pretrained on kinetics400 (Testing)"
-  model_dir: results/mvitv2/vn_sign
+  experiment_name: "vtn_att_poseflow three view finetune from ImageNet"
+  model_dir: results/vtn_att_poseflow/vn_sign
   random_seed: 42
   shuffle: True
-  num_workers: 8
-  prefetch_factor: 2
-  batch_size: 4 #to-debug!
+  num_workers: 12
+  prefetch_factor: 4
+  batch_size: 3 #to-debug!
   total_epoch: 300 #to-debug!
   learning_rate: 0.0001
   save_checkpoints: true
@@ -47,16 +46,16 @@ training:
   top_k: 5
   print_stats: true
   pretrained: true
-  pretrained_model: checkpoints/MVitV2_HandCrop/MVIT V2 Small (Hand Crop) for one view pretrained on kinetics400/best_checkpoints.pth
+  pretrained_model: IMAGENET
   lr_step_size: 10
-  gamma: 0.7
-  num_accumulation_steps: 5
+  gamma: 0.8
+  num_accumulation_steps: 4
   patience: 15
   verbose: true
   delta: 0
   is_early_stopping: true
-  gradient_clip_val: 0
-  w_decay: 1e-4
+  gradient_clip_val: 1
+  w_decay: 1e-3
   log_train_step: true
   log_steps: 50
   evaluate_step: 250
@@ -66,4 +65,9 @@ inference:
   batch_size: 8
 model:
   num_classes: 199
-  
+  num_heads: 8
+  num_layers: 4
+  embed_size: 512
+  cnn: rn34
+  freeze_layers: 5 # free layers in cnn
+  dropout: 0.2

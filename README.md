@@ -36,6 +36,8 @@
   + One view (Finetune from AUTSL): `python3 main.py --config configs/vtn_att_poseflow/vtn_att_poseflow_autsl_to_vn_sign.yaml`
   + One view (Finetune from ImageNet): `python3 main.py --config configs/ablation_study/another_dataset/vtn_att_poseflow/vtn_att_poseflow.yaml`
   + One view (train on AUTSL dataset): None
+  + Three view (Finetune from AUTSL): `python3 main.py --config configs/vtn_att_poseflow/vtn_att_poseflow_three_view_finetune_from_autsl.yaml`
+  + Three view (Finetune from ImageNet): `python3 main.py --config configs/vtn_att_poseflow/vtn_att_poseflow_three_view_finetune_from_imagenet.yaml`
 
 
 # Testing
@@ -72,7 +74,9 @@
 
 
 - Run VTNHCPF:
-  + Sim Knowledge Distillation: `python3 main.py --config configs/Knowledge_Distillation/vtn_hc_pf/test_cfg/vtn_hc_pf_sim_KD_oneview.yaml`
-  + Three view (Finetune from one view): `python3 main.py --config configs/vtn_att_poseflow/test_cfg/vtn_att_poseflow_three_view_finetune_from_one_view.yaml`
+  + Sim Knowledge Distillation (proposal): `python3 main.py --config configs/Knowledge_Distillation/vtn_hc_pf/test_cfg/vtn_hc_pf_sim_KD_oneview.yaml`
+  + Three view (Finetune from one view) (proposal): `python3 main.py --config configs/vtn_att_poseflow/test_cfg/vtn_att_poseflow_three_view_finetune_from_one_view.yaml`
   + One view (Finetune from AUTSL): `python3 main.py --config configs/vtn_att_poseflow/test_cfg/vtn_att_poseflow_autsl_to_vn_sign.yaml`
   + One view (Finetune from ImageNet): `python3 main.py --config configs/ablation_study/another_dataset/vtn_att_poseflow/test_cfg/vtn_att_poseflow.yaml`
+  + Three view (Finetune from AUTSL): `python3 main.py --config configs/vtn_att_poseflow/test_cfg/vtn_att_poseflow_three_view_finetune_from_autsl.yaml`
+  + Three view (Finetune from ImageNet): `python3 main.py --config configs/vtn_att_poseflow/test_cfg/vtn_att_poseflow_three_view_finetune_from_imagenet.yaml`

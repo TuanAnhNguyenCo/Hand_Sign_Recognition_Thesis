@@ -23,7 +23,7 @@ data:
 training:
   test: True
   label_smoothing: 0
-  device: cuda:3
+  device: cuda:0
   overwrite: true
   log_freq: 1
   experiment_name: "vtn_att_poseflow three view finetune from one view (Testing)"
