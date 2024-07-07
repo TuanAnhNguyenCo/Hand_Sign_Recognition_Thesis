@@ -301,37 +301,37 @@ class PositionEncoding(nn.Module):
         return x
 
 
-class FeatureExtractor_AttentionPool2D(nn.Module):
-    """Feature extractor for RGB clips, powered by a 2D CNN backbone."""
+# class FeatureExtractor_AttentionPool2D(nn.Module):
+#     """Feature extractor for RGB clips, powered by a 2D CNN backbone."""
 
-    def __init__(self, cnn='rn50', embed_size=512, freeze_layers=0):
-        """Initialize the feature extractor with given CNN backbone and desired feature size."""
-        super().__init__()
+#     def __init__(self, cnn='rn50', embed_size=512, freeze_layers=0):
+#         """Initialize the feature extractor with given CNN backbone and desired feature size."""
+#         super().__init__()
 
-        model = resnet50(weights = torchvision.models.ResNet50_Weights.IMAGENET1K_V2)
+#         model = resnet50(weights = torchvision.models.ResNet50_Weights.IMAGENET1K_V2)
 
-        self.resnet = nn.Sequential(*list(model.children())[:-2])
+#         self.resnet = nn.Sequential(*list(model.children())[:-2])
 
-        # Freeze layers if requested.
-        for layer_index in range(freeze_layers):
-            for param in self.resnet[layer_index].parameters(True):
-                param.requires_grad_(False)
+#         # Freeze layers if requested.
+#         for layer_index in range(freeze_layers):
+#             for param in self.resnet[layer_index].parameters(True):
+#                 param.requires_grad_(False)
         
-        self.attnpool = AttentionPool2d(224 // 32, 64*32, 32, embed_size)
+#         self.attnpool = AttentionPool2d(224 // 32, 64*32, 32, embed_size)
 
-    def forward(self, rgb_clip):
-        """Extract features from the RGB images."""
-        b, t, c, h, w = rgb_clip.size()
-        # Process all sequential data in parallel as a large mini-batch.
-        rgb_clip = rgb_clip.view(b * t, c, h, w)
+#     def forward(self, rgb_clip):
+#         """Extract features from the RGB images."""
+#         b, t, c, h, w = rgb_clip.size()
+#         # Process all sequential data in parallel as a large mini-batch.
+#         rgb_clip = rgb_clip.view(b * t, c, h, w)
 
-        features = self.resnet(rgb_clip)
+#         features = self.resnet(rgb_clip)
 
-        # Transform the output of the ResNet (C x H x W) to a single feature vector using pooling.
-        features = self.attnpool(features)
+#         # Transform the output of the ResNet (C x H x W) to a single feature vector using pooling.
+#         features = self.attnpool(features)
 
-        # Restore the original dimensions of the tensor.
-        features = features.view(b, t, -1)
-        return features
+#         # Restore the original dimensions of the tensor.
+#         features = features.view(b, t, -1)
+#         return features
     
     

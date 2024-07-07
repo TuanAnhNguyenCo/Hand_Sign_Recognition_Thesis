@@ -22,7 +22,7 @@ data:
   data_type: 1_200_three_view_ord1 # use teacher
 training:
   label_smoothing: 0
-  device: cuda:3
+  device: cuda:0
   overwrite: true
   log_freq: 1
   experiment_name: "VTNHCPF_OneView_Sim_Knowledge_Distilation"

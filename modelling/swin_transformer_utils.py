@@ -284,7 +284,7 @@ def shifted_window_attention_3d(
     # multi-head attention
     qkv = F.linear(x, qkv_weight, qkv_bias)
     qkv = qkv.reshape(x.size(0), x.size(1), 3, num_heads, c // num_heads).permute(2, 0, 3, 1, 4)
-    q, k, v = qkv[0], qkv[1], qkv[2]
+    q, k, v = qkv[0], qkv[1], qkv[2] # B*nW,nHead, Wd*Wh*Ww, C
     q = q * (c // num_heads) ** -0.5
     attn = q.matmul(k.transpose(-2, -1))
     # add relative position bias

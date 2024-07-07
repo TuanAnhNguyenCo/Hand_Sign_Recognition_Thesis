@@ -22,7 +22,7 @@ data:
   data_type: 1_200_center_ord1
 training:
   label_smoothing: 0
-  device: cuda:2
+  device: cuda:0
   overwrite: true
   log_freq: 1
   experiment_name: "MVIT V2 Small (Hand Crop) for one view pretrained on kinetics400"
