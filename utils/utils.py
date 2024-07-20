@@ -8,7 +8,7 @@ from torchvision import models
 from torch.nn import functional as F
 from modelling.swin_transformer import SwinTransformer3d,SwinTransformer3d_ThreeView,SwinTransformer3d_HandCrop,VideoSwinTransformer_OneView_Sim_Knowledge_Distillation,VideoSwinTransformer_OneView_Sim_Knowledge_Distillation_Inference,SwinTransformer3d_ThreeView_ShareWeights
 from collections import OrderedDict
-from modelling.mvit_v2 import mvit_v2_s,MVitV2_ThreeView,MVitV2_HandCrop,MvitV2_OneView_Sim_Knowledge_Distillation,MvitV2_OneView_Sim_Knowledge_Distillation_Inference,MVitV2_ThreeView_ShareWeights,MVitV2_ThreeView_ShareWeights_Visual_Prompt_Tuning
+from modelling.mvit_v2 import mvit_v2_s,MVitV2_ThreeView,MVitV2_HandCrop,MvitV2_OneView_Sim_Knowledge_Distillation,MvitV2_OneView_Sim_Knowledge_Distillation_Inference,MVitV2_ThreeView_ShareWeights
 
 
 def load_criterion(train_cfg):
@@ -203,11 +203,6 @@ def load_model(cfg):
             model.remove_head()
             model.load_state_dict(torch.load(cfg['training']['pretrained_model'],map_location='cpu'))
             print("Load Mvit V2 Three View Share Weights")
-        elif cfg['data']['model_name'] == 'MVitV2_ThreeView_ShareWeights_Visual_Prompt_Tuning':
-            model = MVitV2_ThreeView_ShareWeights_Visual_Prompt_Tuning(**cfg['model'])
-            model.remove_head()
-            model.load_state_dict(torch.load(cfg['training']['pretrained_model'],map_location='cpu'))
-            print("Load MVitV2_ThreeView_ShareWeights_Visual_Prompt_Tuning")
         elif cfg['data']['model_name'] == 'MVitV2_HandCrop':
             model = MVitV2_HandCrop(**cfg['model'])
             if "autsl" in cfg['training']['pretrained_model'].split("/")[-1]:
@@ -215,11 +210,6 @@ def load_model(cfg):
             else:
                 model.remove_head()
                 model.load_state_dict(torch.load(cfg['training']['pretrained_model'],map_location='cpu'))
-        elif cfg['data']['model_name'] == 'MVitV2_ThreeView_ShareWeights_Visual_Prompt_Tuning':
-            model = MVitV2_ThreeView_ShareWeights_Visual_Prompt_Tuning(**cfg['model'])
-            model.remove_head()
-            model.load_state_dict(torch.load(cfg['training']['pretrained_model'],map_location='cpu'))
-            print("Load MVitV2_ThreeView_ShareWeights_Visual_Prompt_Tuning")
     else:
         if cfg['data']['model_name'] == 'vtn_att_poseflow':
             model = VTNHCPF(**cfg['model'],sequence_length=cfg['data']['num_output_frames'])
@@ -363,12 +353,7 @@ def load_model(cfg):
             model.remove_head()
             model.freeze_layers(8)
             model.count()
-        elif cfg['data']['model_name'] == 'MVitV2_ThreeView_ShareWeights_Visual_Prompt_Tuning':
-            model = MVitV2_ThreeView_ShareWeights_Visual_Prompt_Tuning(**cfg['model'])
-            state_dict = torch.load("checkpoints/mvit_v2/MVIT V2 Small for one view finetune from AUTSL/best_checkpoints.pth",map_location='cpu')
-            model.encoder.load_state_dict(state_dict,strict = False)
-            model.remove_head()
-            model.count()
+       
         elif cfg['data']['model_name'] == 'MVitV2_HandCrop':
             model = MVitV2_HandCrop(**cfg['model'])
             state_dict = models.video.MViT_V2_S_Weights.KINETICS400_V1.get_state_dict(progress=True)

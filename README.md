@@ -16,7 +16,11 @@
 ![KD](/images/KD.png)
 
 # Dataset:
-<p>Comming soon ...</p>
+<p>Information about my dataset: </p>
+
+![Data Information](/images/KD.png)
+
+<p>Link: Comming soon ...</p>
 
 # Checkpoints:
 <p>Comming soon ...</p>
