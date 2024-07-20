@@ -30,4 +30,4 @@
   + Three view (Initialized from one view): `python3 main.py --config configs/vtn_att_poseflow/vtn_att_poseflow_three_view_finetune_from_one_view.yaml`
 # Testing
   + Knowledge Distillation Mechanism (proposal): `python3 main.py --config configs/Knowledge_Distillation/vtn_hc_pf/test_cfg/vtn_hc_pf_sim_KD_oneview.yaml`
-  + Three view (Initialized from one view) (proposal): `python3 main.py --config configs/vtn_att_poseflow/test_cfg/vtn_att_poseflow_three_view_finetune_from_one_view.yaml
+  + Three view (Initialized from one view) (proposal): `python3 main.py --config configs/vtn_att_poseflow/test_cfg/vtn_att_poseflow_three_view_finetune_from_one_view.yaml`
