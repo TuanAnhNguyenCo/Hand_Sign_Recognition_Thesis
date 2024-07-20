@@ -1,5 +1,5 @@
 # Introduction
-<p> In this thesis, I researched a model for Vietnamese Sign Language (VSL) recognition.</p>
+<p> In my thesis, I researched a model for Vietnamese Sign Language (VSL) recognition.</p>
 <p>My contributions are: </p>
 <ul> 
   <li>Proposing a multi-view (center, left, right) dataset for VSL</li>
