@@ -14,7 +14,7 @@ from sklearn.model_selection import KFold
 import pandas as pd
 
 wandb.login(
-    key='9bce1a84793dd8652665e9c5a731d2f7775245ad',
+    key='',
     relogin=True
 )
 
