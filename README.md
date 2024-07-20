@@ -18,7 +18,7 @@
 # Dataset:
 <p>Information about my dataset: </p>
 
-![Data Information](/images/KD.png)
+![Data Information](/images/data.png)
 
 <p>Link: Comming soon ...</p>
 
