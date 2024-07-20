@@ -1,57 +1,29 @@
+# Introduction
+<p> In this thesis, I researched a model for Vietnamese Sign Language (VSL) recognition.</p>
+<p>My contributions are: </p>
+<ul> 
+  <li>Proposing a multi-view (center, left, right) dataset for VSL</li>
+  <li>Proposing a three-view model based on my dataset. In my experiments, this model outperformed the current one-view model by at least 5%.</li>
+  <li>Proposing a knowledge distillation mechanism to distill knowledge from the three-view model into a one-view model, making it practical to use with center-view input. The resulting one-view model with knowledge distillation still performs as well as the three-view model, outperforming the current one-view model by at least 4%.</li>
+</ul>
+
+# Results:
+<p>The result of three-view model: </p>
+
+![three-view](/images/three-view.png)
+<p>Results of the one-view model with the proposed knowledge distillation mechanism: </p>
+
+![KD](/images/KD.png)
+
+# Dataset:
+<p>Comming soon ...</p>
+
+# Checkpoints:
+<p>Comming soon ...</p>
+
 # Training
-
-- Run I3D:
-  + One view (Finetune from AUTSL): `python3 main.py --config configs/i3d/i3d_one_view_finetune_from_autsl.yaml`
-  + One view (From Charades): `python3 main.py --config configs/i3d/i3d_pretrained_charades_one_view.yaml`
-  + Hand Crop (From Charades): `python3 main.py --config configs/ablation_study/hand_crop/i3d/i3d_pretrained_charades_one_view_HC.yaml`
-  + One view (train on AUTSL dataset): `python3 main.py --config configs/i3d/i3d_one_view_train_on_autsl.yaml`
-
-- Run MViTv2:
-  + One view (Finetune from AUTSL): `python3 main.py --config configs/mvit_v2/mvit_v2_S_one_view_finetune_from_autsl.yaml`
-  + One view (From Kinetics 400): `python3 main.py --config configs/mvit_v2/mvit_v2_S_one_view_pretrained_on_kinetics400.yaml`
-  + Hand Crop (From Kinetics 400): `python3 main.py --config configs/ablation_study/hand_crop/mvit_v2/mvit_v2_S_one_view_pretrained_on_kinetics400.yaml`
-  + One view (train on AUTSL dataset): `python3 main.py --config configs/mvit_v2/mvit_v2_S_one_view_train_on_autsl.yaml`
-  
-- Run Video Swin Transformer:
-  + One view (Finetune from AUTSL): `python3 main.py --config configs/swin_transformer_3d/swin_transformer_3d_T_one_view_finetune_from_autsl.yaml`
-  + One view (From Kinetics 400): `python3 main.py --config configs/swin_transformer_3d/swin_transformer_3d_T_one_view_pretrained_on_kinetics400.yaml`
-  + Hand Crop (From Kinetics 400): `python3 main.py --config configs/ablation_study/hand_crop/video_swin_transformer/swin_transformer_3d_T_HC_one_view_pretrained_on_kinetics400.yaml`
-  + One view (train on AUTSL dataset): `python3 main.py --config configs/swin_transformer_3d/swin_transformer_3d_T_one_view_train_on_autsl.yaml`
-
-- Run VTNHCPF:
-  + Sim Knowledge Distillation (proposal): `python3 main.py --config configs/Knowledge_Distillation/vtn_hc_pf/vtn_hc_pf_sim_KD_oneview.yaml`
-  + Three view (Finetune from one view): `python3 main.py --config configs/vtn_att_poseflow/vtn_att_poseflow_three_view_finetune_from_one_view.yaml`
-  + One view (Finetune from AUTSL): `python3 main.py --config configs/vtn_att_poseflow/vtn_att_poseflow_autsl_to_vn_sign.yaml`
-  + One view (Finetune from ImageNet): `python3 main.py --config configs/ablation_study/another_dataset/vtn_att_poseflow/vtn_att_poseflow.yaml`
-  + One view (train on AUTSL dataset): None
-  + Three view (Finetune from AUTSL): `python3 main.py --config configs/vtn_att_poseflow/vtn_att_poseflow_three_view_finetune_from_autsl.yaml`
-  + Three view (Finetune from ImageNet): `python3 main.py --config configs/vtn_att_poseflow/vtn_att_poseflow_three_view_finetune_from_imagenet.yaml`
-
-
+  + Knowledge Distillation Mechanism (proposal): `python3 main.py --config configs/Knowledge_Distillation/vtn_hc_pf/vtn_hc_pf_sim_KD_oneview.yaml`
+  + Three view (Initialized from one view): `python3 main.py --config configs/vtn_att_poseflow/vtn_att_poseflow_three_view_finetune_from_one_view.yaml`
 # Testing
-
-- Run I3D:
-  + One view (Finetune from AUTSL): `python3 main.py --config configs/i3d/test_cfg/i3d_one_view_finetune_from_autsl.yaml`
-  + One view (From Charades): `python3 main.py --config configs/ablation_study/another_dataset/i3d/test_cfg/i3d_pretrained_charades_one_view.yaml`
-  + Hand Crop (From Charades): `python3 main.py --config configs/ablation_study/hand_crop/i3d/test_cfg/i3d_pretrained_charades_one_view_HC.yaml`
-  
-
-- Run MViTv2:
-  + One view (Finetune from AUTSL):: `python3 main.py --config configs/mvit_v2/test_cfg/mvit_v2_S_one_view_finetune_from_autsl.yaml`
-  + One view (From Kinetics 400): `python3 main.py --config configs/ablation_study/another_dataset/mvit_v2/test_cfg/mvit_v2_S_one_view_pretrained_on_kinetics400.yaml`
-  + Hand Crop (From Charades): `python3 main.py --config configs/ablation_study/hand_crop/mvit_v2/test_cfg/mvit_v2_S_one_view_pretrained_on_kinetics400.yaml`
-
-- Run Video Swin Transformer:
-  + One view (Finetune from AUTSL): `python3 main.py --config configs/swin_transformer_3d/test_cfg/swin_transformer_3d_T_one_view_finetune_from_autsl.yaml`
-  + One view (From Kinetics 400): `python3 main.py --config configs/ablation_study/another_dataset/swin_transformer_3d/test_cfg/swin_transformer_3d_T_one_view_pretrained_on_kinetics400.yaml`
-  + Hand Crop (From Charades): `python3 main.py --config configs/ablation_study/hand_crop/video_swin_transformer/test_cfg/swin_transformer_3d_T_HC_one_view_pretrained_on_kinetics400.yaml`
-
-
-
-- Run VTNHCPF:
-  + Sim Knowledge Distillation (proposal): `python3 main.py --config configs/Knowledge_Distillation/vtn_hc_pf/test_cfg/vtn_hc_pf_sim_KD_oneview.yaml`
-  + Three view (Finetune from one view) (proposal): `python3 main.py --config configs/vtn_att_poseflow/test_cfg/vtn_att_poseflow_three_view_finetune_from_one_view.yaml`
-  + One view (Finetune from AUTSL): `python3 main.py --config configs/vtn_att_poseflow/test_cfg/vtn_att_poseflow_autsl_to_vn_sign.yaml`
-  + One view (Finetune from ImageNet): `python3 main.py --config configs/ablation_study/another_dataset/vtn_att_poseflow/test_cfg/vtn_att_poseflow.yaml`
-  + Three view (Finetune from AUTSL): `python3 main.py --config configs/vtn_att_poseflow/test_cfg/vtn_att_poseflow_three_view_finetune_from_autsl.yaml`
-  + Three view (Finetune from ImageNet): `python3 main.py --config configs/vtn_att_poseflow/test_cfg/vtn_att_poseflow_three_view_finetune_from_imagenet.yaml`
+  + Knowledge Distillation Mechanism (proposal): `python3 main.py --config configs/Knowledge_Distillation/vtn_hc_pf/test_cfg/vtn_hc_pf_sim_KD_oneview.yaml`
+  + Three view (Initialized from one view) (proposal): `python3 main.py --config configs/vtn_att_poseflow/test_cfg/vtn_att_poseflow_three_view_finetune_from_one_view.yaml
